@@ -1,0 +1,6 @@
+*.bak*
+*.orig
+*.stock
+*.before-*
+__pycache__/
+sampler/target/
