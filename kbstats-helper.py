@@ -133,6 +133,12 @@ def summon(addr):
     if ws is not None:
         run(["hyprctl", "dispatch", f'hl.dsp.window.move({{ workspace = "{ws}", follow = false, window = "address:{addr}" }})'])
     run(["hyprctl", "dispatch", f'hl.dsp.focus({{ window = "address:{addr}" }})'])
+    # Omarchy's floating workspaces ignore focus by address; fall back to the
+    # window's exact class when focus didn't move.
+    if (hypr(["activewindow"]) or {}).get("address") != addr:
+        cls = next((c.get("class", "") for c in hypr(["clients"]) or [] if c.get("address") == addr), "")
+        if cls:
+            run(["hyprctl", "dispatch", f'hl.dsp.focus({{ window = "class:^{re.escape(cls)}$" }})'])
 
 
 def close(pid):
