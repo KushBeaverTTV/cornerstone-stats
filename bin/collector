@@ -1,0 +1,22 @@
+#!/bin/sh
+# Starts the Cornerstone Stats collector built for this processor, with the
+# same arguments. See collector/PROTOCOL.md.
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P) || exit 1
+case $(uname -m) in
+  x86_64 | amd64) arch=x86_64 ;;
+  aarch64 | arm64 | armv8*) arch=aarch64 ;;
+  *) arch=$(uname -m | tr -cd 'A-Za-z0-9_') ;;
+esac
+bin="$here/cornerstone-stats-collector-$arch"
+[ -x "$bin" ] && exec "$bin" "$@"
+
+case ${1-} in
+  "" | --interval)
+    # Streaming: say why in a frame the panel can show, then stay up so the
+    # shell does not restart us over and over.
+    printf '{"v":1,"seq":0,"problems":["No collector is built for this processor (%s). Build one with: cargo build --release --manifest-path collector/Cargo.toml, then copy the result to bin/cornerstone-stats-collector-%s"]}\n' "$arch" "$arch"
+    exec sleep 2147483647
+    ;;
+esac
+echo "cornerstone-stats-collector: no binary for $arch in $here" >&2
+exit 1

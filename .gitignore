@@ -3,4 +3,4 @@
 *.stock
 *.before-*
 __pycache__/
-sampler/target/
+collector/target/

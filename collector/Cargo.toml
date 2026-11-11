@@ -1,0 +1,21 @@
+[package]
+name = "cornerstone-stats-collector"
+version = "2.0.0"
+edition = "2021"
+description = "Collector for the Cornerstone Stats bar plugin: one JSON frame per tick from procfs, sysfs and Hyprland."
+license = "MIT"
+
+[[bin]]
+name = "cornerstone-stats-collector"
+path = "src/main.rs"
+
+[dependencies]
+libc = "0.2"
+serde_json = "1"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"

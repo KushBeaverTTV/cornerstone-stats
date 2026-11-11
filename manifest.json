@@ -2,22 +2,22 @@
   "schemaVersion": 1,
   "id": "cornerstone.stats",
   "name": "Cornerstone Stats",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "author": "Kush Beaver Productionz",
   "license": "MIT",
-  "description": "System stats, task manager and services in one panel. Own fork of Cornerstone Stats with Mission Center style Apps and Services tabs.",
+  "description": "System stats, a task manager and a services manager in one bar widget: live readouts in the bar, and a panel with history graphs, sensors, power, open apps and background services.",
   "kinds": [
     "service",
     "bar-widget"
   ],
   "keepLoaded": true,
   "entryPoints": {
-    "service": "StatsService.qml",
-    "barWidget": "StatsWidget.qml"
+    "service": "Service.qml",
+    "barWidget": "BarWidget.qml"
   },
   "barWidget": {
     "displayName": "Cornerstone Stats",
-    "description": "System monitor readouts with live mini graphs: CPU, GPU, memory, disk, network, temperature, fans and battery, each opening an iStat Menus-style panel with history graphs, ring gauges, sensors, power and top processes.",
+    "description": "Readouts for CPU, GPU, memory, disks, network, sensors and battery, each with a mini graph, ring or figure, opening a panel with history graphs, sensors, power, a task manager and services.",
     "category": "System",
     "aliases": [
       "cornerstone-stats",
@@ -78,14 +78,14 @@
         "key": "tabs",
         "type": "string",
         "label": "Panel tabs",
-        "description": "Comma-separated tabs shown in the panel: apps, cpu, gpu, memory, disks, network, sensors, power, services. Power carries the battery; a list naming battery reads as power.",
-        "defaultValue": "cpu,gpu,memory,disks,network,sensors,power"
+        "description": "Comma-separated tabs shown in the panel: apps, cpu, gpu, memory, disks, network, sensors, power, services. Power carries the battery. Settings is always last.",
+        "defaultValue": "apps,cpu,gpu,memory,disks,network,sensors,power,services"
       },
       {
         "key": "style",
         "type": "enum",
         "label": "Bar style",
-        "description": "Default look of each bar readout: graph, ring, figure (text), graph and figure (both), or ring and figure. The Settings page can override it per module; until either is set, CPU and GPU draw a graph, memory a ring, and disks a ring of space used.",
+        "description": "Default look of each bar readout: graph, ring, figure (text), graph and figure (both), or ring and figure. The Settings tab can choose per module; until either is set, CPU and GPU draw a graph, memory a ring, and disks a ring of space used.",
         "options": [
           "both",
           "graph",
@@ -99,7 +99,7 @@
         "key": "barLabels",
         "type": "enum",
         "label": "Bar labels",
-        "description": "How each readout is labelled: stacked letters (CPU, MEM, NET) like iStat Menus, the short name written horizontally on one line, or a glyph.",
+        "description": "How each readout is labelled: stacked letters (CPU, MEM, NET), the short name on one line, or a glyph.",
         "options": [
           "text",
           "inline",
@@ -205,28 +205,28 @@
         "key": "utilizationLowColor",
         "type": "string",
         "label": "Low utilization color",
-        "description": "Six-digit hex color for displayed 0\u201324% utilization; blank follows the current theme.",
+        "description": "Six-digit hex color for displayed 0 to 24% utilization; blank follows the current theme.",
         "defaultValue": ""
       },
       {
         "key": "utilizationNormalColor",
         "type": "string",
         "label": "Normal utilization color",
-        "description": "Six-digit hex color for displayed 25\u201359% utilization; blank follows the current theme.",
+        "description": "Six-digit hex color for displayed 25 to 59% utilization; blank follows the current theme.",
         "defaultValue": ""
       },
       {
         "key": "utilizationWarningColor",
         "type": "string",
         "label": "Warning utilization color",
-        "description": "Six-digit hex color for displayed 60\u201384% utilization; blank follows the current theme.",
+        "description": "Six-digit hex color for displayed 60 to 84% utilization; blank follows the current theme.",
         "defaultValue": ""
       },
       {
         "key": "utilizationCriticalColor",
         "type": "string",
         "label": "Critical utilization color",
-        "description": "Six-digit hex color for displayed 85\u2013100% utilization; blank follows the current theme.",
+        "description": "Six-digit hex color for displayed 85 to 100% utilization; blank follows the current theme.",
         "defaultValue": ""
       },
       {

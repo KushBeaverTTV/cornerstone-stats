@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+"""cpucost.py NAME SECONDS -> CPU% (of one core) used by processes whose comm or argv0 contains NAME, plus RSS."""
+import os, sys, time
+name, secs = sys.argv[1], float(sys.argv[2])
+tck = os.sysconf("SC_CLK_TCK")
+me = os.getpid()
+def find():
+    out = []
+    for p in os.listdir("/proc"):
+        if not p.isdigit() or int(p) == me: continue
+        try:
+            argv0 = open(f"/proc/{p}/cmdline","rb").read().split(b"\0")[0].decode(errors="replace")
+        except Exception: continue
+        if name in os.path.basename(argv0): out.append(int(p))
+    return out
+def ticks(pids):
+    t = 0; rss = 0
+    for p in pids:
+        try:
+            s = open(f"/proc/{p}/stat").read(); f = s[s.rindex(")")+2:].split()
+            t += int(f[11]) + int(f[12]); rss += int(f[21]) * os.sysconf("SC_PAGE_SIZE")
+        except Exception: pass
+    return t, rss
+pids = find()
+t0, _ = ticks(pids); a = time.time(); time.sleep(secs); t1, rss = ticks(pids); b = time.time()
+print(f"{name}: pids={pids} cpu={(t1-t0)/tck/(b-a)*100:.2f}% of one core, rss={rss/1048576:.1f} MiB")
