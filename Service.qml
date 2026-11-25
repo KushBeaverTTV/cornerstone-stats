@@ -29,6 +29,14 @@ Item {
 
   readonly property var gpus: Hardware.gpus(frame)
   readonly property bool hasGpu: gpus.length > 0
+  readonly property real maxVramPercent: {
+    var top = 0
+    for (var i = 0; i < gpus.length; i++) {
+      var pct = Number(Hardware.vramPercent(gpus[i])) || 0
+      if (pct > top) top = pct
+    }
+    return top
+  }
   readonly property bool hasBattery: !!(frame.battery && frame.battery.present)
 
   // Graph colours from the theme.
